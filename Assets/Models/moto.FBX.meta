@@ -1,0 +1,102 @@
+fileFormatVersion: 2
+guid: 39862adb0136ee348aed6e235b3e8e2f
+ModelImporter:
+  serializedVersion: 15
+  fileIDToRecycleName:
+    100000: Body
+    100002: BodyB
+    100004: BodyF
+    100006: DiscBrakeFL
+    100008: DiscBrakeRL
+    100010: //RootNode
+    100012: WheelFL.2
+    100014: WheelRL.2
+    400000: Body
+    400002: BodyB
+    400004: BodyF
+    400006: DiscBrakeFL
+    400008: DiscBrakeRL
+    400010: //RootNode
+    400012: WheelFL.2
+    400014: WheelRL.2
+    2300000: Body
+    2300002: BodyB
+    2300004: BodyF
+    2300006: DiscBrakeFL
+    2300008: DiscBrakeRL
+    2300010: WheelFL.2
+    2300012: WheelRL.2
+    3300000: Body
+    3300002: BodyB
+    3300004: BodyF
+    3300006: DiscBrakeFL
+    3300008: DiscBrakeRL
+    3300010: WheelFL.2
+    3300012: WheelRL.2
+    4300000: DiscBrakeFL
+    4300002: DiscBrakeRL
+    4300004: WheelFL.2
+    4300006: WheelRL.2
+    4300008: Body
+    4300010: BodyF
+    4300012: BodyB
+    6400000: Body
+    6400002: BodyB
+    6400004: BodyF
+    6400006: DiscBrakeFL
+    6400008: DiscBrakeRL
+    6400010: WheelFL.2
+    6400012: WheelRL.2
+    11100000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 3
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    handles: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  additionalBone: 1
+  animationType: 1
+  userData: 

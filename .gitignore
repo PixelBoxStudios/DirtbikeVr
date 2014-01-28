@@ -1,0 +1,13 @@
+#Note: that ! negates an ignore
+
+Temp/*
+Library/*
+Build/*
+
+*.svd
+*.userprefs
+*.unityproj
+*.sln
+*.csproj
+*.pidb
+

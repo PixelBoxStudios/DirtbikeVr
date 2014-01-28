@@ -1,0 +1,8 @@
+C:\Users\Admin_A\Desktop\Bike_rigged\t$m$p$$$\motorcycle_2010.max
+C:\Users\Admin_A\Desktop\Bike_rigged\t$m$p$$$\MAXFILES.TXT
+H:\moto\M1030 Motorbike\diffuse2.tga
+H:\moto\M1030 Motorbike\spec.TGA
+H:\moto\M1030 Motorbike\gloss.TGA
+H:\moto\M1030 Motorbike\chain_diffuse.tga
+H:\moto\M1030 Motorbike\chain_spec.TGA
+H:\moto\M1030 Motorbike\chain_normal.tga
