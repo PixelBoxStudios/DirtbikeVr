@@ -6,11 +6,15 @@ public class BikeAI : MonoBehaviour
     private List<GameObject> allTargets;
     private int curTarget;
 
+	public List<GameObject> allAIBikes;
+
     public float rotSpeed = 20.0f;
     public float forwardSpeed = 22.0f;
     public float maxSpeed = 25.0f;
     public float steerAngle = 10.0f;
     public float deccelSpeed = 40.0f;
+
+	public float distFromBikes = 10.0f;
 
     public Transform backTireTrans;
     public Transform bikeBody;
@@ -45,6 +49,8 @@ public class BikeAI : MonoBehaviour
     {
         //add all waypoints
         allTargets = new List<GameObject>(GameObject.FindGameObjectsWithTag("Waypoint"));
+		//add all AI bikes
+		allAIBikes = new List<GameObject>(GameObject.FindGameObjectsWithTag("AI"));
 
         //put all the waypoints in order by name
         allTargets.Sort(delegate(GameObject a1, GameObject a2) { return a1.name.CompareTo(a2.name); });
@@ -57,6 +63,7 @@ public class BikeAI : MonoBehaviour
 	void Update ()
     {
         AIPhysics();
+		Spacing();
 	}
 
     void AIPhysics()
@@ -111,6 +118,38 @@ public class BikeAI : MonoBehaviour
             transform.Translate(moveDir * Time.deltaTime);
         //}
     }
+
+	void Spacing()
+	{
+		/*
+		 * option 1:  keep distance from each AI with vector3.distance and the dot product
+		 * then move opposite direction of the dot.
+		 * option 2:  use raycasts left right or forward and if intersecting a bike with the AI tag
+		 * move opposite direction of the intersecting ray
+		 * */
+		foreach(GameObject other in allAIBikes)
+		{
+			Vector3 side = transform.TransformDirection(Vector3.right);
+			
+			Vector3 offsetFromOther = other.transform.position - transform.position;
+			float sqrLen = offsetFromOther.sqrMagnitude;
+			
+			if (sqrLen < distFromBikes * distFromBikes)
+			{
+				float bikeOnRight = Vector3.Angle(offsetFromOther, side);
+				float bikeOnLeft = Vector3.Angle(offsetFromOther, -side);
+				
+				if (bikeOnRight < 40)
+				{
+					print(other.transform.name + " bike on right side of " + transform.name);
+				}
+				if (bikeOnLeft < 40)
+				{
+					print(other.transform.name + " bike on left side of " + transform.name);
+				}
+			}
+		}
+	}
 
     void Respawn()
     {
