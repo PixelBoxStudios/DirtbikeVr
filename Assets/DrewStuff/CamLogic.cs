@@ -38,24 +38,25 @@ public class CamLogic : MonoBehaviour
     {
         //curCrowd = allCrowds[0];
 
-        if (!curCrowd)
-        {
-            foreach (GameObject fanStand in allCrowds)
-            {
-                float dist = Vector3.Distance(bike.transform.position, fanStand.transform.position);
-
-                if (dist < 30)
-                {
-                    curCrowd = fanStand;
-                }
-            }
-        }
-        else
-        {
+//        if (!curCrowd)
+//        {
+//            foreach (GameObject fanStand in allCrowds)
+//            {
+//                float dist = Vector3.Distance(bike.transform.position, fanStand.transform.position);
+//
+//                if (dist < 30)
+//                {
+//                    curCrowd = fanStand;
+//                }
+//            }
+//        }
+//        else
+//        {
             //for (int i = 0; i < allCrowds.Length; i++)
             foreach (GameObject fanStand in allCrowds)
             {
                 float dist = Vector3.Distance(bike.transform.position, fanStand.transform.position);
+
                 //Vector3 dist = bike.transform.position - fanStand.transform.position;
                 //get direction to current crowd
                 //Vector3 dirToCrowd = allCrowds[i].transform.position - transform.position;
@@ -77,14 +78,15 @@ public class CamLogic : MonoBehaviour
                     //set current stand we are looking at
                     //curCrowd = fanStand;
                     //looking in general direction
-                    if (angle < 40 && !drewBackTire.isGrounded)
+                    if (angle < 20 && !drewBackTire.isGrounded)
                     {
                         //set current stand we are looking at
-                        curCrowd = fanStand;
+//                        curCrowd = fanStand;
                         //call cheering crowd animation
-                        curCrowd.BroadcastMessage("Cheer", 0, SendMessageOptions.DontRequireReceiver);
-
+//                        curCrowd.BroadcastMessage("Cheer", 0, SendMessageOptions.DontRequireReceiver);
+					fanStand.BroadcastMessage("Cheer", 0, SendMessageOptions.DontRequireReceiver);
                         fanStand.audio.PlayOneShot(cheer, 0.6f);
+					fanStand.renderer.material.color = Color.blue;
 
                         //apply turbo
                         if (bikePhysics.turboBar < bikePhysics.maxTurboBar)
@@ -93,16 +95,17 @@ public class CamLogic : MonoBehaviour
                         }
                     }
                 }
-                Vector3 oldCrowdPos = fanStand.transform.position - transform.position;
+//                Vector3 oldCrowdPos = fanStand.transform.position - transform.position;
 
                 //looking away from stands
                 //if (Vector3.Dot(transform.forward, oldCrowdPos.normalized) < 0.2f)
-                if (angle > 40)
+                if (angle > 20)
                 {
                     //call idle crowd animation
-                    curCrowd.BroadcastMessage("Idle", 0, SendMessageOptions.DontRequireReceiver);
+                    fanStand.BroadcastMessage("Idle", 0, SendMessageOptions.DontRequireReceiver);
+				fanStand.renderer.material.color = Color.red;
                 }
             }
-        }
+//        }
     }
 }
