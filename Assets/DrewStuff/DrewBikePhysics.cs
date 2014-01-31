@@ -22,6 +22,9 @@ public class DrewBikePhysics : MonoBehaviour
     public float maxTurboBar = 30.0f;
     public float turboSpeed = 40.0f;
     public float turboDepletionSpeed = 5.0f;
+	public float timeSlowRate = 0.2f;
+
+	public float timeRate;
 
     public int curLap = 0;
 
@@ -65,6 +68,7 @@ public class DrewBikePhysics : MonoBehaviour
 	void Update ()
     {
         Movement();
+		ApplyGravity();
         Turbo();
         HeightControl();
 	}
@@ -74,19 +78,36 @@ public class DrewBikePhysics : MonoBehaviour
         RaycastHit hitInfo;
 
         //apply slow mo
-        if (!Physics.Raycast(transform.position, Vector3.down, out hitInfo, distFromGround) && LevelScripts.isGreen)
+        if (!Physics.Raycast(transform.position, Vector3.down, out hitInfo, distFromGround) && !drewBackTire.isGrounded)
         {
-            if (Time.timeScale == 1)
-            {
-                Time.timeScale = 0.3f;
-            }
+			print(rigidbody.velocity.y);
+
+			if (Time.timeScale == 1)
+			{
+				Time.timeScale = 0.3f;
+			}
+//            if (timeRate > 0.3f && timeRate <= 1)
+//            {
+//				if (rigidbody.velocity.y > 0)
+//				{
+//					timeRate -= timeSlowRate;
+//				}
+//				else
+//				{
+//					timeRate += timeSlowRate;
+//				}
+//                Time.timeScale = timeRate;
+//            }
         }
             //reset to normal speed
         else
         {
-            if (Time.timeScale != 1)
+			if (Time.timeScale != 1)
+//            if (timeRate != 1)
             {
-                Time.timeScale = 1;
+				Time.timeScale = 1;
+//				timeRate = 1;
+//                Time.timeScale = timeRate;
             }
         }
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
@@ -115,7 +136,7 @@ public class DrewBikePhysics : MonoBehaviour
                 accelFactor = Mathf.MoveTowards(accelFactor, 0, deccelSpeed * Time.deltaTime);
             }
 
-            if (!hasCrashed && LevelScripts.isGreen)
+            if (!hasCrashed && !LevelScripts.isGreen)
             {
                 //turn the bike
                 rotDir.y += steer * steerSpeed * Time.deltaTime;
@@ -193,6 +214,14 @@ public class DrewBikePhysics : MonoBehaviour
             transform.Translate(moveDir * Time.deltaTime);
         //}
     }
+
+	void ApplyGravity()
+	{
+		Vector3 vel = rigidbody.velocity;
+
+		vel.y -= 0.95f;
+		rigidbody.velocity = vel;
+	}
 
     void Respawn()
     {

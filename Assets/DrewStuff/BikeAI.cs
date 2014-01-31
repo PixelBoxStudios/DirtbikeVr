@@ -78,7 +78,7 @@ public class BikeAI : MonoBehaviour
                 Invoke("Respawn", 0);
             }
         }
-        else if (LevelScripts.isGreen)
+        else if (!LevelScripts.isGreen)
         {
             //accelerate
             accelFactor = Mathf.MoveTowards(accelFactor, curSpeed, forwardSpeed * Time.deltaTime);
@@ -94,7 +94,10 @@ public class BikeAI : MonoBehaviour
             {
                 curTarget++;
             }
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), rotSpeed * Time.deltaTime);
+			Vector3 curTargetPos = allTargets[curTarget].transform.position;
+			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), rotSpeed * Time.deltaTime);
+//			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(transform.position.x, transform.position.y, curTargetPos.z)), rotSpeed * Time.deltaTime);
+//			transform.LookAt(new Vector3(curTargetPos.x, transform.position.y, transform.position.z));
         }
         else
         {
@@ -113,10 +116,10 @@ public class BikeAI : MonoBehaviour
         moveDir = new Vector3(0, rigidbody.velocity.y, accelFactor);
 
         //move
-        //if (LevelScripts.isGreen)
-        //{
+//        if (LevelScripts.isGreen)
+//        {
             transform.Translate(moveDir * Time.deltaTime);
-        //}
+//        }
     }
 
 	void Spacing()
@@ -141,6 +144,7 @@ public class BikeAI : MonoBehaviour
 				
 				if (bikeOnRight < 40)
 				{
+
 					print(other.transform.name + " bike on right side of " + transform.name);
 				}
 				if (bikeOnLeft < 40)

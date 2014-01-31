@@ -56,6 +56,7 @@ public class LapController : MonoBehaviour
     void EndRace()
     {
         Application.LoadLevel(0);
+		isRaceFinished = false;
     }
 
     public void RecordRank(GameObject racer)
