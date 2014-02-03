@@ -80,8 +80,6 @@ public class DrewBikePhysics : MonoBehaviour
         //apply slow mo
         if (!Physics.Raycast(transform.position, Vector3.down, out hitInfo, distFromGround) && !drewBackTire.isGrounded)
         {
-			print(rigidbody.velocity.y);
-
 			if (Time.timeScale == 1)
 			{
 				Time.timeScale = 0.3f;
