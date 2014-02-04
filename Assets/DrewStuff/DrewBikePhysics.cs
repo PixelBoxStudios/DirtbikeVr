@@ -14,7 +14,6 @@ public class DrewBikePhysics : MonoBehaviour
     public float flipSpeed = 5.0f;
 
     public float flipAngle = 20.0f;
-    //public float wheelieAngle = 100.0f;
 
     //[HideInInspector]
     public float turboBar = 0.0f;
@@ -55,7 +54,7 @@ public class DrewBikePhysics : MonoBehaviour
     {
         drewBackTire = backTire.GetComponent<DrewBackTire>();
         checkPoints = GetComponent<CheckPoints>();
-        lapCounter = lapController.GetComponent<LapController>();
+//        lapCounter = lapController.GetComponent<LapController>();
     }
 
     void Start()
@@ -68,7 +67,6 @@ public class DrewBikePhysics : MonoBehaviour
 	void Update ()
     {
         Movement();
-		ApplyGravity();
         Turbo();
         HeightControl();
 	}
@@ -207,19 +205,11 @@ public class DrewBikePhysics : MonoBehaviour
         transform.eulerAngles = rotDir;
 
         //move
-        //if (!LevelScripts.isGreen)
-        //{
+//        if (LevelScripts.isGreen)
+//        {
             transform.Translate(moveDir * Time.deltaTime);
-        //}
+//        }
     }
-
-	void ApplyGravity()
-	{
-		Vector3 vel = rigidbody.velocity;
-
-		vel.y -= 0.95f;
-		rigidbody.velocity = vel;
-	}
 
     void Respawn()
     {
@@ -305,7 +295,7 @@ public class DrewBikePhysics : MonoBehaviour
             //record ranking position
             if (curLap == LapController.lapCount)
             {
-                lapCounter.RecordRank(transform.gameObject);
+//                lapCounter.RecordRank(transform.gameObject);
                 LapController.isRaceFinished = true;
             }
         }
