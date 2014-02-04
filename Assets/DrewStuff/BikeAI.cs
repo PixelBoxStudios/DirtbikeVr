@@ -4,11 +4,15 @@ using System.Collections.Generic;
 public class BikeAI : MonoBehaviour
 {
 	public List<GameObject> allTargets;
+	public List<GameObject> tempTargetList;
 	public int curTarget;
-	
+	public Transform curWaypoint;
+	private Transform lastWaypoint;
+
 	public List<GameObject> allAIBikes;
 	
 	public float rotSpeed = 20.0f;
+	public float stabilizeSpeed = 15.0f;
 	public float forwardSpeed = 22.0f;
 	public float maxSpeed = 25.0f;
 	public float steerAngle = 10.0f;
@@ -35,6 +39,7 @@ public class BikeAI : MonoBehaviour
 	
 	private Vector3 moveDir;
 	private Vector3 rotDir;
+	private Vector3 initAngle;
 	
 	private CheckPoints checkPoints;
 	private DrewBackTire backTire;
@@ -60,9 +65,12 @@ public class BikeAI : MonoBehaviour
 		
 		//put all the waypoints in order by name
 		allTargets.Sort(delegate(GameObject a1, GameObject a2) { return a1.name.CompareTo(a2.name); });
-		
+
+		curWaypoint = allTargets[0].transform;
+
 		curSpeed = maxSpeed;
 		initRot = bikeBody.rotation;
+		initAngle = transform.eulerAngles;
 	}
 	
 	// Update is called once per frame
@@ -70,10 +78,11 @@ public class BikeAI : MonoBehaviour
 	{
 		AIPhysics();
 		//		Jump();
-		ApplyGravity();
+//		ApplyGravity();
 		//		Spacing();
 	}
-	
+
+	#region jump
 	void Jump()
 	{
 		RaycastHit hitInfo;
@@ -100,6 +109,17 @@ public class BikeAI : MonoBehaviour
 		{
 			agent.Resume ();
 		}
+	}
+	#endregion
+
+	void Stabilize()
+	{
+		/*	if out of range of waypoint, straighten out bike.
+		 *	else when in range allow for leaning
+		 */
+		Vector3 rot = transform.eulerAngles;
+		rot.z = Mathf.MoveTowardsAngle(rot.z, initAngle.z, stabilizeSpeed * Time.deltaTime);
+		transform.eulerAngles = rot;
 	}
 	
 	void ApplyGravity()
@@ -130,27 +150,51 @@ public class BikeAI : MonoBehaviour
 		//go through the waypoints
 		if (curTarget < allTargets.Count - 1)
 		{
-			Vector3 dir = allTargets[curTarget].transform.position - transform.position;
-			float sqrMag = dir.sqrMagnitude;
+			float dist = 0.0f;
+
+			foreach(GameObject waypoint in allTargets)
+			{
+			Vector3 toWaypoint = waypoint.transform.position - transform.position;
+//			Vector3 toWaypoint = allTargets.IndexOf.position - transform.position;
+//			Vector3 toWaypoint = curWaypoint.position - transform.position;
+			float sqrMag = toWaypoint.sqrMagnitude;
+//				float sqrMag = Vector3.Distance(transform.position, waypoint.transform.position);
 			
 			//			RaycastHit hitInfo;
 			
 			//            float dist = Vector3.Distance(allTargets[curTarget].transform.position, transform.position);
 			
-			if (sqrMag < distFromWaypoint * distFromWaypoint)
+			//in range of waypoint
+			if (sqrMag < dist * dist)
 				//			if (Physics.Raycast(transform.position, transform.forward, out hitInfo, distFromWaypoint))
 				//            {
 				//				if (hitInfo.collider.tag == "Waypoint")
 			{
+				//not on a waypoint so count to next
 				if (!isOnWaypoint)
 				{
-					curTarget++;
+						curWaypoint = waypoint.transform;
+						dist = sqrMag;
+//					tempTargetList.Insert(0, curWaypoint.gameObject);
+//					curWaypoint = tempTargetList[0].transform;
+//					allTargets.Remove(curWaypoint.gameObject);
+//					allTargets = tempTargetList;
+//					curWaypoint = lastWaypoint;
+//					curTarget++;
 				}
 				isOnWaypoint = true;
 			}
 			else
 			{
+					dist = distFromWaypoint;
 				isOnWaypoint = false;
+//				tempTargetList.Remove(curWaypoint.gameObject);
+				//when not in range of a waypoint stabilize the bike
+				if (backTire.isGrounded)
+				{
+					Stabilize();
+				}
+			}
 			}
 			//            }
 			//			Debug.DrawRay(transform.position, transform.forward * distFromWaypoint, Color.blue);
@@ -158,7 +202,9 @@ public class BikeAI : MonoBehaviour
 //			if (curTarget != 0)
 //			{
 				//				agent.SetDestination(allTargets[curTarget].transform.position);
-				Vector3 lookDir = allTargets[curTarget].transform.eulerAngles;
+				//align to previous waypoint
+//				Vector3 lookDir = allTargets[curTarget - 1].transform.eulerAngles;
+				Vector3 lookDir = curWaypoint.eulerAngles;
 				Vector3 rot = transform.eulerAngles;
 				rot.y = Mathf.MoveTowardsAngle(rot.y, lookDir.y, rotSpeed * Time.deltaTime);
 				transform.eulerAngles = rot;
@@ -168,16 +214,16 @@ public class BikeAI : MonoBehaviour
 		}
 		else
 		{
-			//if (curLap >= LapCounter.lapCount)
-			//{
-			//    //slow to a stop
-			//    accelFactor = Mathf.MoveTowards(accelFactor, 0, deccelSpeed * Time.deltaTime);
-			//}
-			//else
-			//{
+			if (curLap >= LapController.lapCount)
+			{
+			    //slow to a stop
+			    accelFactor = Mathf.MoveTowards(accelFactor, 0, deccelSpeed * Time.deltaTime);
+			}
+			else
+			{
 			//loop back to first waypoint
-			curTarget = 0;
-			//}
+				curTarget = 0;
+			}
 		}
 		
 		moveDir = new Vector3(0, rigidbody.velocity.y, accelFactor);
@@ -189,7 +235,8 @@ public class BikeAI : MonoBehaviour
 		transform.Translate(moveDir * Time.deltaTime);
 		//}
 	}
-	
+
+	#region spacing
 	void Spacing()
 	{
 		/*
@@ -235,13 +282,17 @@ public class BikeAI : MonoBehaviour
 			//			transform.eulerAngles = rotDir;
 		}
 	}
-	
+	#endregion
+
 	void Respawn()
 	{
+		rigidbody.freezeRotation = true;
+
 		bikeBody.localRotation = initRot;
 		transform.rotation = checkPoints.currentCheckpoint.rotation;
 		transform.position = checkPoints.currentCheckpoint.position;
-		
+
+		rigidbody.freezeRotation = false;
 		hasCrashed = false;
 	}
 	
