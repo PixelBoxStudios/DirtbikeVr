@@ -804,7 +804,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: aaf4d08e7433d6442b13725888de2dad, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: .5
   Loop: 1
   Mute: 0
@@ -895,9 +895,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mySkin: {fileID: 0}
   speed: 22
-  brakeForce: 40
+  brakeForce: 25
   maxSpeed: 27
-  steerSpeed: 50
+  steerSpeed: 60.25
   steerAngle: 30
   deccelSpeed: 10
   flipSpeed: 10
@@ -907,7 +907,7 @@ MonoBehaviour:
   maxTurboBar: 30
   turboSpeed: 45
   turboDepletionSpeed: 5
-  timeSlowRate: .200000003
+  timeSlowRate: 2.5
   timeRate: 0
   curLap: 0
   backTire: {fileID: 642286752}
@@ -938,8 +938,8 @@ Transform:
   m_PrefabParentObject: {fileID: 400012, guid: 38263267116d7814baadf2711274efef, type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1061189947}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 163.18483, y: 1.92294669, z: 295.704376}
+  m_LocalRotation: {x: 0, y: .409126908, z: 0, w: .912477493}
+  m_LocalPosition: {x: 301.899994, y: 1.92294669, z: 251.100006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1448698450}
