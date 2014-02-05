@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DrewBikePhysics : MonoBehaviour
 {
@@ -32,16 +33,16 @@ public class DrewBikePhysics : MonoBehaviour
     public Transform bikeBody;
     public Transform lapController;
 
-    [HideInInspector]
+//    [HideInInspector]
     public bool hasCrashed = false;
 
-    [HideInInspector]
+//    [HideInInspector]
     public float accelFactor = 0.0f;
     private float curMaxSpeed = 0.0f;
     public float distFromGround = 5.0f;
 
     private Vector3 rotDir;
-    private Vector3 moveDir;
+    public Vector3 moveDir;
     private Vector3 lastPos;
 
     private Quaternion initRot;
@@ -133,7 +134,7 @@ public class DrewBikePhysics : MonoBehaviour
                 accelFactor = Mathf.MoveTowards(accelFactor, 0, deccelSpeed * Time.deltaTime);
             }
 
-            if (!hasCrashed && !LevelScripts.isGreen)
+            if (!hasCrashed && !LevelScripts.isGreen)  //@@  turn back to if green is true
             {
                 //turn the bike
                 rotDir.y += steer * steerSpeed * Time.deltaTime;
@@ -210,6 +211,12 @@ public class DrewBikePhysics : MonoBehaviour
 //        {
             transform.Translate(moveDir * Time.deltaTime);
 //        }
+		if (accelFactor != 0)
+		{
+			BroadcastMessage("SpinWheel", accelFactor, SendMessageOptions.DontRequireReceiver);
+//			wheelSpin.ForEach(Wheel(accelFactor, inputDir);
+		}
+		Handlebars.instance.TurnWheel(steer);
     }
 
     void Respawn()

@@ -1,0 +1,119 @@
+fileFormatVersion: 2
+guid: 1700c72abe17d904894a4a4d20aa6949
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: Arc01
+    100002: b_endl
+    100004: Back_wheel
+    100006: //RootNode
+    100008: Bike Body
+    100010: bn_endr
+    100012: Bone01
+    100014: Bone02
+    100016: Box001
+    100018: Circle01
+    100020: Circle02
+    100022: Front_wheel
+    100024: HandleBars
+    100026: KickStand
+    100028: left_break
+    100030: Line04
+    100032: MotorCycle
+    100034: MotorCycle001
+    100036: right_break
+    400000: Arc01
+    400002: b_endl
+    400004: Back_wheel
+    400006: //RootNode
+    400008: Bike Body
+    400010: bn_endr
+    400012: Bone01
+    400014: Bone02
+    400016: Box001
+    400018: Circle01
+    400020: Circle02
+    400022: Front_wheel
+    400024: HandleBars
+    400026: KickStand
+    400028: left_break
+    400030: Line04
+    400032: MotorCycle
+    400034: MotorCycle001
+    400036: right_break
+    2300000: Back_wheel
+    2300002: Box001
+    2300004: Front_wheel
+    2300006: HandleBars
+    2300008: KickStand
+    2300010: MotorCycle
+    2300012: MotorCycle001
+    3300000: Back_wheel
+    3300002: Box001
+    3300004: Front_wheel
+    3300006: HandleBars
+    3300008: KickStand
+    3300010: MotorCycle
+    3300012: MotorCycle001
+    4300000: MotorCycle001
+    4300002: MotorCycle
+    4300004: KickStand
+    4300006: Back_wheel
+    4300008: Box001
+    4300010: HandleBars
+    4300012: Front_wheel
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .0500000007
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 

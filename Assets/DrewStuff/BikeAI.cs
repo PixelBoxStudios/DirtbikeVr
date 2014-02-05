@@ -149,6 +149,11 @@ public class BikeAI : MonoBehaviour
 		//move
 		moveDir = new Vector3(0, rigidbody.velocity.y, accelFactor);
 		transform.Translate(moveDir * Time.deltaTime);
+
+		if (accelFactor != 0)
+		{
+			BroadcastMessage("SpinWheel", accelFactor, SendMessageOptions.DontRequireReceiver);
+		}
 	}
 
 	void Respawn()
