@@ -59,7 +59,8 @@ public class DrewBikePhysics : MonoBehaviour
 
     void Start()
     {
-        initRot = bikeBody.rotation;
+        initRot = bikeBody.localRotation;
+		rotDir = transform.eulerAngles;
 
         curMaxSpeed = maxSpeed;
     }
@@ -189,7 +190,7 @@ public class DrewBikePhysics : MonoBehaviour
             if ((flipInput == 0 || Input.GetKeyUp(KeyCode.DownArrow)))
             {
                 //reset bike's rotation
-                bikeBody.localRotation = Quaternion.RotateTowards(bikeBody.localRotation, initRot, flipSpeed);
+				bikeBody.localRotation = Quaternion.RotateTowards(bikeBody.localRotation, initRot, flipSpeed);
             }
         }
         //set max and min speeds

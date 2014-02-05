@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+//PLEASE REMEMBER TO CHANGE LINES WITH THIS SYMBOL (@@) ON IT BACK TO THEIR CORRECT STATES!!!
+
 public class BikeAI : MonoBehaviour
 {
 	public List<GameObject> allTargets;
-	public List<GameObject> tempTargetList;
-	public int curTarget;
 	public Transform curWaypoint;
-	private Transform lastWaypoint;
 
 	public List<GameObject> allAIBikes;
 	
@@ -15,7 +14,6 @@ public class BikeAI : MonoBehaviour
 	public float stabilizeSpeed = 15.0f;
 	public float forwardSpeed = 22.0f;
 	public float maxSpeed = 25.0f;
-	public float steerAngle = 10.0f;
 	public float deccelSpeed = 40.0f;
 	
 	public float distFromBikes = 10.0f;
@@ -25,15 +23,14 @@ public class BikeAI : MonoBehaviour
 	public Transform bikeBody;
 	public Transform lapController;
 	public Transform bike;
-	
+
+	[HideInInspector]
 	public bool hasCrashed = false;
-	public bool isOnWaypoint = false;
-	public bool isJumping = false;
+	private bool isOnWaypoint = false;
 	
-	public float accelFactor = 0.0f;
-	private float curSpeed = 0.0f;
+	private float accelFactor = 0.0f;
 	
-	public int curLap = 0;
+	private int curLap = 0;
 	
 	private Quaternion initRot;
 	
@@ -45,8 +42,6 @@ public class BikeAI : MonoBehaviour
 	private DrewBackTire backTire;
 	private LapController lapCounter;
 	
-	private NavMeshAgent agent;
-	
 	void Awake()
 	{
 		backTire = backTireTrans.GetComponent<DrewBackTire>();
@@ -57,7 +52,6 @@ public class BikeAI : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		agent = GetComponent<NavMeshAgent>();
 		//add all waypoints
 		allTargets = new List<GameObject>(GameObject.FindGameObjectsWithTag("Waypoint"));
 		//add all AI bikes
@@ -66,9 +60,9 @@ public class BikeAI : MonoBehaviour
 		//put all the waypoints in order by name
 		allTargets.Sort(delegate(GameObject a1, GameObject a2) { return a1.name.CompareTo(a2.name); });
 
+		//set first waypoint
 		curWaypoint = allTargets[0].transform;
 
-		curSpeed = maxSpeed;
 		initRot = bikeBody.rotation;
 		initAngle = transform.eulerAngles;
 	}
@@ -77,40 +71,7 @@ public class BikeAI : MonoBehaviour
 	void FixedUpdate ()
 	{
 		AIPhysics();
-		//		Jump();
-//		ApplyGravity();
-		//		Spacing();
 	}
-
-	#region jump
-	void Jump()
-	{
-		RaycastHit hitInfo;
-		
-		if (Physics.Raycast(transform.position, transform.forward, out hitInfo, 5))
-		{
-			if (hitInfo.transform.tag == "Jump" && backTire.isGrounded)
-			{
-				isJumping = true;
-			}
-		}
-		if (isJumping)
-		{
-			agent.Stop(true);
-			
-			if (backTire.isGrounded)
-			{
-				//				rigidbody.AddRelativeForce((Vector3.forward * 20 + Vector3.up * 10) * Time.deltaTime, ForceMode.Impulse);
-				rigidbody.velocity = (transform.forward * 15 + Vector3.up * 20);
-			}
-			//			rigidbody.AddForce((transform.forward * 10 + Vector3.up * 10) * Time.deltaTime, ForceMode.Impulse);
-		}
-		else
-		{
-			agent.Resume ();
-		}
-	}
-	#endregion
 
 	void Stabilize()
 	{
@@ -120,13 +81,6 @@ public class BikeAI : MonoBehaviour
 		Vector3 rot = transform.eulerAngles;
 		rot.z = Mathf.MoveTowardsAngle(rot.z, initAngle.z, stabilizeSpeed * Time.deltaTime);
 		transform.eulerAngles = rot;
-	}
-	
-	void ApplyGravity()
-	{
-		Vector3 vel = rigidbody.velocity;
-		vel.y -= 20 * Time.deltaTime;
-		rigidbody.velocity = vel;
 	}
 	
 	void AIPhysics()
@@ -141,148 +95,61 @@ public class BikeAI : MonoBehaviour
 				Invoke("Respawn", 0);
 			}
 		}
-		else if (!LevelScripts.isGreen)
+		else if (!LevelScripts.isGreen)  //@@ - set to check for true not false
 		{
 			//accelerate
-			accelFactor = Mathf.MoveTowards(accelFactor, curSpeed, forwardSpeed * Time.deltaTime);
+			accelFactor = Mathf.MoveTowards(accelFactor, maxSpeed, forwardSpeed * Time.deltaTime);
 		}
 		
 		//go through the waypoints
-		if (curTarget < allTargets.Count - 1)
-		{
-			float dist = 0.0f;
+		float dist = 0.0f;
 
-			foreach(GameObject waypoint in allTargets)
-			{
+		foreach(GameObject waypoint in allTargets)
+		{
 			Vector3 toWaypoint = waypoint.transform.position - transform.position;
-//			Vector3 toWaypoint = allTargets.IndexOf.position - transform.position;
-//			Vector3 toWaypoint = curWaypoint.position - transform.position;
 			float sqrMag = toWaypoint.sqrMagnitude;
-//				float sqrMag = Vector3.Distance(transform.position, waypoint.transform.position);
-			
-			//			RaycastHit hitInfo;
-			
-			//            float dist = Vector3.Distance(allTargets[curTarget].transform.position, transform.position);
 			
 			//in range of waypoint
 			if (sqrMag < dist * dist)
-				//			if (Physics.Raycast(transform.position, transform.forward, out hitInfo, distFromWaypoint))
-				//            {
-				//				if (hitInfo.collider.tag == "Waypoint")
 			{
-				//not on a waypoint so count to next
+				//not on a waypoint so asign current
 				if (!isOnWaypoint)
 				{
-						curWaypoint = waypoint.transform;
-						dist = sqrMag;
-//					tempTargetList.Insert(0, curWaypoint.gameObject);
-//					curWaypoint = tempTargetList[0].transform;
-//					allTargets.Remove(curWaypoint.gameObject);
-//					allTargets = tempTargetList;
-//					curWaypoint = lastWaypoint;
-//					curTarget++;
+					curWaypoint = waypoint.transform;
+					dist = sqrMag;
 				}
 				isOnWaypoint = true;
 			}
 			else
 			{
-					dist = distFromWaypoint;
+				//out of range so reset some values
+				dist = distFromWaypoint;
 				isOnWaypoint = false;
-//				tempTargetList.Remove(curWaypoint.gameObject);
-				//when not in range of a waypoint stabilize the bike
+
+				//straighten out the bike if grounded
 				if (backTire.isGrounded)
 				{
 					Stabilize();
 				}
 			}
-			}
-			//            }
-			//			Debug.DrawRay(transform.position, transform.forward * distFromWaypoint, Color.blue);
-			
-//			if (curTarget != 0)
-//			{
-				//				agent.SetDestination(allTargets[curTarget].transform.position);
-				//align to previous waypoint
-//				Vector3 lookDir = allTargets[curTarget - 1].transform.eulerAngles;
-				Vector3 lookDir = curWaypoint.eulerAngles;
-				Vector3 rot = transform.eulerAngles;
-				rot.y = Mathf.MoveTowardsAngle(rot.y, lookDir.y, rotSpeed * Time.deltaTime);
-				transform.eulerAngles = rot;
-				//			transform.rotation = Quaternion.FromToRotation(transform.up, Vector3.up);
-				//            	transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDir), rotSpeed * Time.deltaTime);
-//			}
 		}
-		else
-		{
-			if (curLap >= LapController.lapCount)
-			{
-			    //slow to a stop
-			    accelFactor = Mathf.MoveTowards(accelFactor, 0, deccelSpeed * Time.deltaTime);
-			}
-			else
-			{
-			//loop back to first waypoint
-				curTarget = 0;
-			}
-		}
-		
-		moveDir = new Vector3(0, rigidbody.velocity.y, accelFactor);
-		
-		//move
-		
-		//if (LevelScripts.isGreen)
-		//{
-		transform.Translate(moveDir * Time.deltaTime);
-		//}
-	}
 
-	#region spacing
-	void Spacing()
-	{
-		/*
-		 * option 1:  keep distance from each AI with vector3.distance and the dot product
-		 * then move opposite direction of the dot.
-		 * option 2:  use raycasts left right or forward and if intersecting a bike with the AI tag
-		 * move opposite direction of the intersecting ray
-		 * */
-		foreach(GameObject other in allAIBikes)
+		//align to current waypoint
+		Vector3 lookDir = curWaypoint.eulerAngles;
+		Vector3 rot = transform.eulerAngles;
+		rot.y = Mathf.MoveTowardsAngle(rot.y, lookDir.y, rotSpeed * Time.deltaTime);
+		transform.eulerAngles = rot;
+
+		if (curLap >= LapController.lapCount)
 		{
-			Vector3 side = transform.TransformDirection(Vector3.right);
-			
-			Vector3 offsetFromOther = other.transform.position - transform.position;
-			float sqrLen = offsetFromOther.sqrMagnitude;
-			
-			//in range of a bike
-			if (sqrLen < distFromBikes * distFromBikes)
-			{
-				float bikeOnRight = Vector3.Angle(offsetFromOther, side);
-				float bikeOnLeft = Vector3.Angle(offsetFromOther, -side);
-				
-				if (bikeOnRight < 40)
-				{
-					print(other.transform.name + " bike on right side of " + transform.name);
-					
-					rotDir = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, Mathf.LerpAngle(transform.eulerAngles.z, 10 * rotSpeed, 0.2f));
-					moveDir.x = -5;
-				}
-				if (bikeOnLeft < 40)
-				{
-					print(other.transform.name + " bike on left side of " + transform.name);
-					
-					rotDir = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, Mathf.LerpAngle(transform.eulerAngles.z, -10 * rotSpeed, 0.2f));
-					moveDir.x = 5;
-				}
-			}
-			else
-			{
-				rotDir = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, Mathf.LerpAngle(transform.eulerAngles.z, 0, 0.2f));
-				moveDir.x = 0;
-			}
-			//apply the rotation values
-			//			transform.eulerAngles = rotDir;
+		    //slow to a stop
+		    accelFactor = Mathf.MoveTowards(accelFactor, 0, deccelSpeed * Time.deltaTime);
 		}
+
+		//move
+		moveDir = new Vector3(0, rigidbody.velocity.y, accelFactor);
+		transform.Translate(moveDir * Time.deltaTime);
 	}
-	#endregion
 
 	void Respawn()
 	{
@@ -298,7 +165,7 @@ public class BikeAI : MonoBehaviour
 	
 	void OnTriggerExit(Collider col)
 	{
-		if (col.name == "finish line")
+		if (col.tag == "Finish Line")
 		{
 			//count next lap
 			curLap++;
@@ -309,19 +176,8 @@ public class BikeAI : MonoBehaviour
 			}
 		}
 	}
-	
-	//	void OnTriggerStay(Collider col)
-	//	{
-	//		if (col.tag == "Land")
-	//		{
-	//			if (backTire.isGrounded && isJumping)
-	//			{
-	//				isJumping = false;
-	//			}
-	//		}
-	//	}
-	
-	//limit the angle
+
+	#region I don't know if I'll need this later so for now it stays - Drew
 	float ClampAngle(float angle, float limit)
 	{
 		if (angle > 180)
@@ -351,4 +207,5 @@ public class BikeAI : MonoBehaviour
 		
 		return angle;
 	}
+	#endregion
 }
