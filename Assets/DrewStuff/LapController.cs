@@ -4,7 +4,7 @@ using System.Linq;
 
 public class LapController : MonoBehaviour
 {
-    public static int lapCount = 3;
+    public static int lapCount = 1;
     public static bool isRaceFinished = false;
 
     public GUISkin mySkin;
@@ -28,7 +28,7 @@ public class LapController : MonoBehaviour
         {
             for (int i = 0; i < racers.Count; i++)
             {
-                if (rank == 1 && racers[i].name == "moto")
+                if (rank == 1 && racers[i].tag == "Player")
                 {
                     if (playedOnce)
                     {
@@ -36,7 +36,7 @@ public class LapController : MonoBehaviour
                         playedOnce = false;
                     }
                 }
-                else if (rank > 1 && racers[i].name == "moto")
+                else if (rank > 1 && racers[i].tag == "Player")
                 {
                     if (playedOnce)
                     {

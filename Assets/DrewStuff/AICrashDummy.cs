@@ -14,7 +14,7 @@ public class AICrashDummy : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.transform.name == "LevelTerrain")
+        if (col.transform.name == "Terrain")
         {
             bikePhysics.hasCrashed = true;
         }

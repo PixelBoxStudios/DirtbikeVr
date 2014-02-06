@@ -27,10 +27,12 @@ public class BikeAI : MonoBehaviour
 	[HideInInspector]
 	public bool hasCrashed = false;
 	private bool isOnWaypoint = false;
+	private bool isOnFinishLine = false;
 	
 	private float accelFactor = 0.0f;
 	
-	private int curLap = 0;
+	public int curLap = 0;
+	public int curTarget = 0;
 	
 	private Quaternion initRot;
 	
@@ -61,7 +63,7 @@ public class BikeAI : MonoBehaviour
 		allTargets.Sort(delegate(GameObject a1, GameObject a2) { return a1.name.CompareTo(a2.name); });
 
 		//set first waypoint
-		curWaypoint = allTargets[0].transform;
+//		curWaypoint = allTargets[0].transform;
 
 		initRot = bikeBody.rotation;
 		initAngle = transform.eulerAngles;
@@ -102,30 +104,44 @@ public class BikeAI : MonoBehaviour
 		}
 		
 		//go through the waypoints
-		float dist = 0.0f;
+		float dist = 10.0f;
 
-		foreach(GameObject waypoint in allTargets)
-		{
-			Vector3 toWaypoint = waypoint.transform.position - transform.position;
-			float sqrMag = toWaypoint.sqrMagnitude;
+		//sort by distance
+//		allTargets.Sort(delegate(GameObject a1, GameObject a2) { return Vector3.Distance(a1.transform.position, transform.position).CompareTo(
+//				Vector3.Distance(a2.transform.position, transform.position)); });
+
+//		foreach(GameObject waypoint in allTargets)
+//		{
 			
-			//in range of waypoint
-			if (sqrMag < dist * dist)
+		if (curTarget < allTargets.Count)
+		{
+			Vector3 toWaypoint = allTargets[curTarget].transform.position - transform.position;
+			float sqrMag = toWaypoint.sqrMagnitude;
+
+//			//in range of waypoint
+			if (sqrMag < distFromWaypoint * distFromWaypoint)
 			{
+		
 				//not on a waypoint so asign current
 				if (!isOnWaypoint)
 				{
-					curWaypoint = waypoint.transform;
-					dist = sqrMag;
+					curTarget++;
+					curWaypoint = allTargets[curTarget].transform;
+//					dist = sqrMag;
 				}
 				isOnWaypoint = true;
 			}
+				
 			else
 			{
 				//out of range so reset some values
-				dist = distFromWaypoint;
+//				dist = distFromWaypoint;
 				isOnWaypoint = false;
 			}
+		}
+		else
+		{
+			curTarget = 0;
 		}
 
 		//straighten out the bike if grounded
@@ -135,10 +151,14 @@ public class BikeAI : MonoBehaviour
 		}
 
 		//align to current waypoint
-		Vector3 lookDir = curWaypoint.eulerAngles;
-		Vector3 rot = transform.eulerAngles;
-		rot.y = Mathf.MoveTowardsAngle(rot.y, lookDir.y, rotSpeed * Time.deltaTime);
-		transform.eulerAngles = rot;
+//		Vector3 lookDir = curWaypoint.eulerAngles;
+		Vector3 lookDir = allTargets[curTarget].transform.position - transform.position;
+		Quaternion rot = transform.rotation;
+//		rot.y = Mathf.MoveTowardsAngle(rot.y, lookDir.y, rotSpeed * Time.deltaTime);
+		rot = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDir), rotSpeed * Time.deltaTime);
+//		rot.x = ClampAngle(transform.eulerAngles.x, 60.0f);
+		rot = Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y, transform.eulerAngles.z);
+		transform.rotation = rot;
 
 		if (curLap >= LapController.lapCount)
 		{
@@ -168,17 +188,29 @@ public class BikeAI : MonoBehaviour
 		hasCrashed = false;
 	}
 	
+	void OnTriggerEnter(Collider col)
+	{
+		if (col.tag == "Finish Line")
+		{
+			if (!isOnFinishLine)
+			{
+				//count next lap
+				curLap++;
+				//record rank position
+				if (curLap == LapController.lapCount)
+				{
+					lapCounter.RecordRank(transform.gameObject);
+				}
+			}
+			isOnFinishLine = true;
+		}
+	}
+
 	void OnTriggerExit(Collider col)
 	{
 		if (col.tag == "Finish Line")
 		{
-			//count next lap
-			curLap++;
-			//record rank position
-			if (curLap == LapController.lapCount)
-			{
-				lapCounter.RecordRank(transform.gameObject);
-			}
+			isOnFinishLine = false;
 		}
 	}
 

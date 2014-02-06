@@ -28,8 +28,8 @@ public class CamLogic : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		TurboControl();
 		CheckViewAngle();
+		TurboControl();
 	}
 	
 	void CheckViewAngle()

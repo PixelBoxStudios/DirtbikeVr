@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+//PLEASE REMEMBER TO CHANGE LINES WITH THIS SYMBOL (@@) ON IT BACK TO THEIR CORRECT STATES!!!
+
 public class DrewBikePhysics : MonoBehaviour
 {
     public GUISkin mySkin;
@@ -55,7 +57,7 @@ public class DrewBikePhysics : MonoBehaviour
     {
         drewBackTire = backTire.GetComponent<DrewBackTire>();
         checkPoints = GetComponent<CheckPoints>();
-//        lapCounter = lapController.GetComponent<LapController>();
+        lapCounter = lapController.GetComponent<LapController>();
     }
 
     void Start()
@@ -207,14 +209,13 @@ public class DrewBikePhysics : MonoBehaviour
         transform.eulerAngles = rotDir;
 
         //move
-//        if (LevelScripts.isGreen)
-//        {
+        if (!LevelScripts.isGreen)  //@@  Change to true
+        {
             transform.Translate(moveDir * Time.deltaTime);
-//        }
+        }
 		if (accelFactor != 0)
 		{
 			BroadcastMessage("SpinWheel", accelFactor, SendMessageOptions.DontRequireReceiver);
-//			wheelSpin.ForEach(Wheel(accelFactor, inputDir);
 		}
 		Handlebars.instance.TurnWheel(steer);
     }
@@ -296,7 +297,7 @@ public class DrewBikePhysics : MonoBehaviour
 
     void OnTriggerExit(Collider col)
     {
-        if (col.tag == "Checkpoint" && checkPoints.curCheckpointPos == checkPoints.allCheckpoints.Count - 1)
+        if (col.tag == "Finish Line" && checkPoints.curCheckpointPos <= checkPoints.allCheckpoints.Count -1)
         {
             //count for next lap
             curLap++;

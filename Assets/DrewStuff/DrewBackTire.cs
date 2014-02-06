@@ -17,7 +17,7 @@ public class DrewBackTire : MonoBehaviour
     {
         RaycastHit hitInfo;
 
-        if (Physics.Raycast(transform.position, Vector3.down, out hitInfo, 2, layerMask))
+        if (Physics.Raycast(transform.position, Vector3.down, out hitInfo, 1))
         {
             isGrounded = true;
         }
