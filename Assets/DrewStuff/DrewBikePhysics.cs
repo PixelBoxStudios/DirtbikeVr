@@ -83,7 +83,7 @@ public class DrewBikePhysics : MonoBehaviour
         {
 			if (Time.timeScale == 1)
 			{
-				Time.timeScale = 0.3f;
+				Time.timeScale = 0.55f;
 			}
 //            if (timeRate > 0.3f && timeRate <= 1)
 //            {

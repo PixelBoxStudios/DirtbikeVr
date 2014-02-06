@@ -37,18 +37,20 @@ public class CamLogic : MonoBehaviour
 		float angleToBike = Vector3.Angle(transform.right, bike.transform.right);
 
 		//looking mostly to the side
-		if (angleToBike > 55)
+		if (angleToBike > 30)
 		{
-			if (drewBackTire.isGrounded)
-			{
-				bikePhysics.hasCrashed = true;
-			}
+
 			isLookingSide = true;
 		}
 		//looking mostly straight
-		else
+	   else
 		{
 			isLookingSide = false;
+		}
+
+		if (drewBackTire.isGrounded && angleToBike > 50)
+		{
+			bikePhysics.hasCrashed = true;
 		}
 	}
 	
