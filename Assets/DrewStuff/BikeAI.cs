@@ -125,13 +125,13 @@ public class BikeAI : MonoBehaviour
 				//out of range so reset some values
 				dist = distFromWaypoint;
 				isOnWaypoint = false;
-
-				//straighten out the bike if grounded
-				if (backTire.isGrounded)
-				{
-					Stabilize();
-				}
 			}
+		}
+
+		//straighten out the bike if grounded
+		if (backTire.isGrounded)
+		{
+			Stabilize();
 		}
 
 		//align to current waypoint
