@@ -35,6 +35,7 @@ public class DrewBikePhysics : MonoBehaviour
 
     [HideInInspector]
     public bool hasCrashed = false;
+	private bool isDone = false;
 
     [HideInInspector]
     public float accelFactor = 0.0f;
@@ -214,6 +215,19 @@ public class DrewBikePhysics : MonoBehaviour
 			BroadcastMessage("SpinWheel", accelFactor, SendMessageOptions.DontRequireReceiver);
 		}
 		Handlebars.instance.TurnWheel(steer);
+
+		if (LapController.isRaceFinished)
+		{
+			if (!isDone)
+			{
+				lapCounter.RecordRank(transform.gameObject);
+			}
+			isDone = true;
+		}
+		else
+		{
+			isDone = false;
+		}
     }
 
     void Respawn()
@@ -293,15 +307,14 @@ public class DrewBikePhysics : MonoBehaviour
 
     void OnTriggerExit(Collider col)
     {
-        if (col.tag == "Finish Line" && checkPoints.curCheckpointPos <= checkPoints.allCheckpoints.Count -1)
+        if (col.tag == "Finish Line" && checkPoints.curCheckpointPos < checkPoints.allCheckpoints.Count - 1)
         {
             //count for next lap
             curLap++;
             //record ranking position
             if (curLap == LapController.lapCount)
             {
-//                lapCounter.RecordRank(transform.gameObject);
-                LapController.isRaceFinished = true;
+				LapController.isRaceFinished = true;
             }
         }
     }

@@ -10,6 +10,6 @@ public class IgnoreColliding : MonoBehaviour
 	void Start ()
     {
         Physics.IgnoreCollision(finishLine.collider, collider);
-        Physics.IgnoreCollision(checkPoint.collider, collider);
+		Physics.IgnoreCollision(checkPoint.collider, collider);
 	}
 }

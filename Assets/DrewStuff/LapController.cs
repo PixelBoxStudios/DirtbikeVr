@@ -4,7 +4,7 @@ using System.Linq;
 
 public class LapController : MonoBehaviour
 {
-    public static int lapCount = 3;
+    public static int lapCount = 1;
     public static bool isRaceFinished = false;
 
     public GUISkin mySkin;
@@ -46,23 +46,27 @@ public class LapController : MonoBehaviour
                 }
                 GUI.Label(new Rect(250, 100 * i, 500, 500), "Racer: " + racers[i].name + " placed " + (i + 1));
             }
-            if (!IsInvoking("EndRace"))
-            {
-                Invoke("EndRace", 5);
-            }
+			if (Input.GetKeyDown(KeyCode.Return))
+			{
+				Application.LoadLevel(0);
+				isRaceFinished = false;
+//				if (!IsInvoking("EndRace"))
+//				{
+//					Invoke("EndRace", 5);
+//				}
+			}
         }
     }
 
-    void EndRace()
-    {
-        Application.LoadLevel(0);
-		isRaceFinished = false;
-    }
+//    void EndRace()
+//    {
+//        Application.LoadLevel(0);
+//		isRaceFinished = false;
+//    }
 
     public void RecordRank(GameObject racer)
     {
         racers.Add(racer);
         rank++;
-        print(racer.name + " is " + rank + " place.");
     }
 }

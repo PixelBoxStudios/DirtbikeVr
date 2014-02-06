@@ -63,7 +63,7 @@ public class BikeAI : MonoBehaviour
 		allTargets.Sort(delegate(GameObject a1, GameObject a2) { return a1.name.CompareTo(a2.name); });
 
 		//set first waypoint
-//		curWaypoint = allTargets[0].transform;
+		curWaypoint = allTargets[0].transform;
 
 		initRot = bikeBody.rotation;
 		initAngle = transform.eulerAngles;
