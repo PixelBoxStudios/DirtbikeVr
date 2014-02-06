@@ -164,15 +164,15 @@ public class DrewBikePhysics : MonoBehaviour
         }
         else
         {
-            if (!hasCrashed && flipInput > 0)
-            {
-                //rotate bike for a flip
-                bikeBody.Rotate(Vector3.right * -flipSpeed);
-            }
-            if (Input.GetKey(KeyCode.DownArrow) && !hasCrashed)
-            {
-                bikeBody.Rotate(Vector3.right * -flipSpeed);
-            }
+//            if (!hasCrashed && flipInput > 0)
+//            {
+//                //rotate bike for a flip
+//                bikeBody.Rotate(Vector3.right * -flipSpeed);
+//            }
+//            if (Input.GetKey(KeyCode.DownArrow) && !hasCrashed)
+//            {
+//                bikeBody.Rotate(Vector3.right * -flipSpeed);
+//            }
             //make gravity stronger
             Physics.gravity = new Vector3(0, -24, 0);
         }
