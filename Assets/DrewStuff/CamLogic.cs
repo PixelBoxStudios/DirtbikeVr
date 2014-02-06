@@ -37,7 +37,7 @@ public class CamLogic : MonoBehaviour
 		float angleToBike = Vector3.Angle(transform.right, bike.transform.right);
 
 		//looking mostly to the side
-		if (angleToBike > 45)
+		if (angleToBike > 55)
 		{
 			if (drewBackTire.isGrounded)
 			{
@@ -65,7 +65,8 @@ public class CamLogic : MonoBehaviour
 		float angle = Vector3.Angle(dirToCrowd, transform.forward);
 
 		//looking in general direction but cap how far away a stand can be
-		if (angle < 20 && !drewBackTire.isGrounded && sqrDist < maxDistToStands * maxDistToStands && isLookingSide)
+//		if (angle < 20 && !drewBackTire.isGrounded && sqrDist < maxDistToStands * maxDistToStands && isLookingSide)
+		if (angle < 20 && !drewBackTire.isGrounded && isLookingSide)
 		{
 			//call cheering crowd animation and cheer sound FX
 			allCrowds[0].BroadcastMessage("Cheer", 0, SendMessageOptions.DontRequireReceiver);

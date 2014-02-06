@@ -4,7 +4,7 @@ using System.Linq;
 
 public class LapController : MonoBehaviour
 {
-    public static int lapCount = 1;
+    public static int lapCount = 3;
     public static bool isRaceFinished = false;
 
     public GUISkin mySkin;

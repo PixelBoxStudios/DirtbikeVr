@@ -18,16 +18,14 @@ public class DrewBikePhysics : MonoBehaviour
 
     public float flipAngle = 20.0f;
 
-    //[HideInInspector]
+    [HideInInspector]
     public float turboBar = 0.0f;
     public float turboBoostSpeed = 12.0f;
     public float maxTurboBar = 30.0f;
     public float turboSpeed = 40.0f;
     public float turboDepletionSpeed = 5.0f;
-	public float timeSlowRate = 0.2f;
 
-	public float timeRate;
-
+	[HideInInspector]
     public int curLap = 0;
 
     public Transform backTire;
@@ -35,16 +33,16 @@ public class DrewBikePhysics : MonoBehaviour
     public Transform bikeBody;
     public Transform lapController;
 
-//    [HideInInspector]
+    [HideInInspector]
     public bool hasCrashed = false;
 
-//    [HideInInspector]
+    [HideInInspector]
     public float accelFactor = 0.0f;
     private float curMaxSpeed = 0.0f;
     public float distFromGround = 5.0f;
 
     private Vector3 rotDir;
-    public Vector3 moveDir;
+    private Vector3 moveDir;
     private Vector3 lastPos;
 
     private Quaternion initRot;
@@ -136,7 +134,7 @@ public class DrewBikePhysics : MonoBehaviour
                 accelFactor = Mathf.MoveTowards(accelFactor, 0, deccelSpeed * Time.deltaTime);
             }
 
-            if (!hasCrashed && !LevelScripts.isGreen)  //@@  turn back to if green is true
+            if (!hasCrashed && LevelScripts.isGreen)  //@@  turn back to if green is true
             {
                 //turn the bike
                 rotDir.y += steer * steerSpeed * Time.deltaTime;
@@ -209,10 +207,8 @@ public class DrewBikePhysics : MonoBehaviour
         transform.eulerAngles = rotDir;
 
         //move
-        if (!LevelScripts.isGreen)  //@@  Change to true
-        {
-            transform.Translate(moveDir * Time.deltaTime);
-        }
+    	transform.Translate(moveDir * Time.deltaTime);
+
 		if (accelFactor != 0)
 		{
 			BroadcastMessage("SpinWheel", accelFactor, SendMessageOptions.DontRequireReceiver);

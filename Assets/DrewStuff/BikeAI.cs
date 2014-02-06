@@ -97,7 +97,7 @@ public class BikeAI : MonoBehaviour
 				Invoke("Respawn", 0);
 			}
 		}
-		else if (!LevelScripts.isGreen)  //@@ - set to check for true not false
+		else if (LevelScripts.isGreen)  //@@ - set to check for true not false
 		{
 			//accelerate
 			accelFactor = Mathf.MoveTowards(accelFactor, maxSpeed, forwardSpeed * Time.deltaTime);
