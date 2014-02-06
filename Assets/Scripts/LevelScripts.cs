@@ -72,7 +72,7 @@ public class LevelScripts : MonoBehaviour
 	
 	void LightActivation()
 	{
-			waitTimer = 0.72f;
+			waitTimer = 0.93f;
 			if(lightCount <= 3)
 			{
 			lightHolder[lightCount].SetActive(true);
@@ -84,7 +84,7 @@ public class LevelScripts : MonoBehaviour
 			audio.PlayOneShot(clipHolder[clipCount]);
 			for( int i = 0; i < 1; i++)
 			{
-				gateHolder[i].transform.localRotation = new Quaternion(90.0f,3.0f,0.0f,0.0f);
+				gateHolder[i].SetActive(false);
 			}
 			isGreen = true;
 		}
