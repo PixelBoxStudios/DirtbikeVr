@@ -115,9 +115,9 @@ public class BikePhysics: MonoBehaviour {
 
             if(hit.transform.tag == "Ground" || hit.transform.name == "Floor") {
 
-                float distanceToGround = hit.distance;
+                //float distanceToGround = hit.distance;
 
-                Vector3 pointOfHit = hit.point;
+               
 
                 //Debug.Log("Ray Hit Distance: " + hit.distance + "Hit Points: " + hit.point);
 

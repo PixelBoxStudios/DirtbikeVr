@@ -19,7 +19,7 @@ public class CrashDummy : MonoBehaviour
 
     void CrashGroundCheck()
     {
-        if (Physics.Raycast(transform.position, transform.up, 0.5f))
+        if (Physics.Raycast(transform.position, -transform.up, 0.5f))
         {
             bikePhysics.hasCrashed = true;
         }

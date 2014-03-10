@@ -104,7 +104,7 @@ public class BikeAI : MonoBehaviour
 		}
 		
 		//go through the waypoints
-		float dist = 10.0f;
+
 
 		//sort by distance
 //		allTargets.Sort(delegate(GameObject a1, GameObject a2) { return Vector3.Distance(a1.transform.position, transform.position).CompareTo(

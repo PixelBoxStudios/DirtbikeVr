@@ -7,13 +7,13 @@ public class DrewFrontTire : MonoBehaviour
     public Transform backTireTrans;
 
     private DrewBackTire backTire;
-    private DrewBikePhysics bikePhysics;
+ 	private DrewBikePhysics bikePhysics;
 
     private int layerMask = 1 << 8;
 
 	void Awake ()
     {
-        bikePhysics = bike.GetComponent<DrewBikePhysics>();
+        //bikePhysics = bike.GetComponent<DrewBikePhysics>();
 	}
 
     void Start()

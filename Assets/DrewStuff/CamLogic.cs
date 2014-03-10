@@ -48,7 +48,7 @@ public class CamLogic : MonoBehaviour
 			isLookingSide = false;
 		}
 
-		if (drewBackTire.isGrounded && angleToBike > 50)
+		if (drewBackTire.isGrounded && angleToBike > 120)
 		{
 			bikePhysics.hasCrashed = true;
 		}
@@ -62,7 +62,7 @@ public class CamLogic : MonoBehaviour
 
 		//find relative position
 		Vector3 dirToCrowd = allCrowds[0].transform.position - transform.position;
-		float sqrDist = dirToCrowd.sqrMagnitude;
+		//float sqrDist = dirToCrowd.sqrMagnitude;
 
 		float angle = Vector3.Angle(dirToCrowd, transform.forward);
 

@@ -8,7 +8,7 @@ public class lapTimer : MonoBehaviour
     float fastestTime = 0.0f;
     float totalTime = 0.0f;
     public float currentLapTime = 0.0f;
-    float lastLapTime = 0.0f;
+   // float lastLapTime = 0.0f;
 
     //Lap variables
     int currentLap = 0;
@@ -68,7 +68,7 @@ public class lapTimer : MonoBehaviour
                 {
                     //add the time to total and save the lap time
                     totalTime += currentLapTime;
-                    lastLapTime = currentLapTime;
+                    //lastLapTime = currentLapTime;
                     //reset the lap time
                     currentLapTime = 0.0f;
 					currentLap += 1;
