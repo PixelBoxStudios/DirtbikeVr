@@ -29,7 +29,7 @@ public class motorcycle_physics : MonoBehaviour
 		velocity.Set		(0.0f, 0.0f, 0.0f);
 		acceleration.Set	(0.0f, 0.0f, 0.0f);
 		rotation.Set		(0.0f, 0.0f, 0.0f);
-		inverseMass 		= 0.0f;
+		inverseMass 		= 1.0f;
 		forceAccum.Set		(0.0f, 0.0f, 0.0f);
 		torqAccum.Set		(0.0f, 0.0f, 0.0f);
 		//kineticFriction 	= 0.0f;
@@ -75,7 +75,7 @@ public class motorcycle_physics : MonoBehaviour
 		lastAccel += GetForceAccum() * GetInverseMass();
 		lastAccel *= Time.deltaTime;
 		SetAcceleration(lastAccel);
-		SetVelocity(lastAccel);
+		SetVelocity(GetVelocity() + lastAccel);
 		psr.position = psr.position += GetVelocity() * Time.deltaTime;
 		
 		//update angular
@@ -98,13 +98,17 @@ public class motorcycle_physics : MonoBehaviour
 	void InputUpdate()
 	{
 		//XBox controller variables
-		float steering 		= Input.GetAxis("Left Analog X");
-		float throttle 		= Input.GetAxis("Trigger Buttons");
-		bool  frontBrake 	= Input.GetButtonDown("Right Button");
-		bool  backBrake 	= Input.GetButtonDown("B Button");
+		float steering 		= Input.GetAxis("steering");
+		//float throttle 		= Input.GetAxis("throttle");
+		bool throttle 		= Input.GetButtonDown("throttle");
+		bool  frontBrake 	= Input.GetButtonDown("front brake");
+		bool  backBrake 	= Input.GetButtonDown("back brake");
 		//below will be used for tricks and stunts, needs renaming and redesigning
 		//float riderLean 	= Input.GetAxis("Right Analog X");
 		//float riderTilt 	= Input.GetAxis("Right Analog Y");
+
+		//Keyboard controller variables
+
 		
 		//twist handlebars to left
 		if(steering < 0)
@@ -119,10 +123,10 @@ public class motorcycle_physics : MonoBehaviour
 			handleBars.Rotate(temp * steering * Time.deltaTime);
 		}
 		//accelerate in direction of back tire
-		if(throttle > 0)
+		if(throttle)
 		{
-			Vector3 temp = rearTire.position - frontTire.position;
-			temp = temp * 100 * Time.deltaTime;//using 100 for acceleration for now till gearing is calculated and used to calculate forces added
+			Vector3 temp = frontTire.position - rearTire.position;
+			temp = temp * 100;//using 100 for acceleration for now till gearing is calculated and used to calculate forces added
 			Addforce(temp);
 		}
 		//accelerate in direction of back tire
@@ -138,6 +142,5 @@ public class motorcycle_physics : MonoBehaviour
 			temp = temp * -15 * Time.deltaTime;//using 15 for acceleration of braking for now till
 			Addforce(temp);
 		}
-		
 	}
 }
